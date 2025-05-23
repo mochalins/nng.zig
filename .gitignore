@@ -14,3 +14,7 @@ compile_flags.txt
 .zed
 .nova
 *~
+.zig-cache
+zig-out
+!build.zig
+!build.zig.zon

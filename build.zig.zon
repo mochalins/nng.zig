@@ -1,0 +1,13 @@
+.{
+    .name = .nng,
+    .fingerprint = 0x95a08dea68e18483,
+    .minimum_zig_version = "0.14.0",
+    .version = "2.0.0",
+    .paths = .{
+        "src",
+        "include",
+        "LICENSE.txt",
+        "build.zig",
+        "build.zig.zon",
+    },
+}

@@ -10,6 +10,8 @@
 #ifndef CORE_DEVICE_H
 #define CORE_DEVICE_H
 
+#include "defs.h"
+
 // Device takes messages from one side, and forwards them to the other.
 // It works in both directions.  Arguably we should build versions of this
 // that are unidirectional, and we could extend this API with user-defined
