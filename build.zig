@@ -213,17 +213,18 @@ pub fn build(b: *std.Build) !void {
     ) orelse 8 else 8;
 
     const PollQPoller = enum { auto, ports, kqueue, epoll, poll, select };
-    var pollq_poller: PollQPoller = if (target.result.os.tag != .windows)
-        (if (advanced) b.option(
-            PollQPoller,
-            "NNG_POLLQ_POLLER",
-            "Poller used for multiplexing I/O",
-        ) orelse .auto else .auto)
-    else
-        undefined;
+    var pollq_poller: PollQPoller = if (target.result.os.tag == .windows)
+        undefined
+    else if (advanced) b.option(
+        PollQPoller,
+        "NNG_POLLQ_POLLER",
+        "Poller used for multiplexing I/O",
+    ) orelse .auto else .auto;
     if (pollq_poller == .auto) {
         // TODO: Properly auto-detect poller
-        pollq_poller = .ports;
+        switch (target.result.os.tag) {
+            else => pollq_poller = .poll,
+        }
     }
 
     const nng_mod = b.createModule(.{
@@ -483,7 +484,6 @@ pub fn build(b: *std.Build) !void {
                     .auto => unreachable,
                 },
                 switch (target.result.os.tag) {
-                    .linux => "posix_rand_arc4random.c",
                     // TODO: Properly check for random symbols
                     else => "posix_rand_urandom.c",
                 },
